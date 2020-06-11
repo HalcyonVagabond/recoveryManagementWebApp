@@ -1,0 +1,87 @@
+.patientInfoContainer {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 300px;
+    border-right: 1px solid lightgray;
+    padding-right: 15px;
+    height: 93%;
+    background-color: lightgrey;
+    padding-top: 15px;
+}
+.patientInfoContainer .ant-card-cover > *{
+    width: 84% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+.patientInfoContainer .ant-collapse-header{
+    background-color: #49c6e2;
+}
+.patientInfoContainer .ant-collapse-header:hover{
+    background-color: #2f85c4;
+    color: white;
+}
+.patientNotesContainer{
+    position: absolute;
+    width: 73%;
+    top: 76px;
+    left: 327px;
+    padding: 0px 25px;
+    box-shadow: 3px 3px 3px 3px lightgrey;
+}
+.notesSection{
+    padding: 15px 15px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: none;
+    border-bottom: none;
+    background: none;
+}
+.notesSearchbar {
+    display: flex !important;
+    align-self: center;
+    justify-content: space-between !important;
+    width: 100%;
+    background-color: #fafafa;
+    border: 1px solid lightgray;
+    margin-bottom: 15px !important;
+}
+.note .ant-collapse-header:hover{
+    cursor: pointer;
+    background-color: #fafafa;
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+.therapist{
+    background-color: #f7969a !important;
+}
+/* .therapist:hover{
+    background-color: lightcoral!important;
+} */
+.medical{
+    background-color: #9bea92 !important;
+}
+/* .medical:hover{
+    background-color: #72b96a !important;
+} */
+.psychiatrist{
+    background-color: lightskyblue;
+}
+/* .psychiatrist:hover{
+    background-color: #2f85c4;
+} */
+.sw{
+    background-color: lightyellow;
+}
+/* .sw:hover{
+    color: white !important;
+    background-color: #f0cc12;
+} */
+
+.notesPagination{
+    width: 33%;
+    margin-top: 3px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 10px;
+}

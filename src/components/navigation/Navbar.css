@@ -1,0 +1,41 @@
+.mainNavContainer{
+    position: fixed;
+    right: 0;
+    display: flex !important;
+    width: 70% !important;
+    justify-content: space-evenly;
+    margin-left: 300px;
+    height: 64px !important;
+    line-height: 65px;
+    background-color: #2f85c4;
+}
+
+.headerContainer{
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    height: 64px;
+    z-index: 1;
+}
+.logo{
+    width: 100vw;
+    height: 64px;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #2f85c4;
+}
+
+.logo img {
+    height: 54px;
+    margin-left: 32px;
+    margin-top: 4px;
+}
+
+.mainNavContainer .ant-menu-item:hover{
+    color: black !important;
+    background-color: #49c6e2 !important;
+}
+
+.mainNavContainer .ant-menu-item-selected{
+    color: black !important;
+    background-color: #49c6e2 !important;
+}
