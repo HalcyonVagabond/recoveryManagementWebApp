@@ -24,8 +24,7 @@
 .patientNotesContainer{
     position: absolute;
     width: 73%;
-    top: 76px;
-    left: 327px;
+    left: 290px;
     padding: 0px 25px;
     box-shadow: 3px 3px 3px 3px lightgrey;
 }
@@ -79,7 +78,7 @@
 } */
 
 .notesPagination{
-    width: 33%;
+    width: 37%;
     margin-top: 3px;
     margin-left: auto !important;
     margin-right: auto !important;

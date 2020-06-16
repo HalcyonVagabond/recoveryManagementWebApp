@@ -5,10 +5,10 @@ import './IndividualClientView.css'
 
 const PatientView = () => {
     return (
-        <div>
+        <>
             <ClientInfo/>
             <ClientNoteList/>
-        </div>
+        </>
 
     );
 };
