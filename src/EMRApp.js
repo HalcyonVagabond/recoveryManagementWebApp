@@ -1,13 +1,17 @@
-import React from 'react';
-import './App.css';
+import React, {useState} from 'react';
+import './Main.css';
 import Navbar from './components/navigation/Navbar'
 import BodyRouter from './components/BodyRouter'
 
-function EMRApp() {
+const EMRApp = () => {
+  const [loggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <>
-      <Navbar/>
-      <BodyRouter/>
+      <Navbar loggedIn={loggedIn} setIsLoggedIn={setIsLoggedIn}/>
+      <div id='bodyContainer'>
+        <BodyRouter loggedIn={loggedIn} setIsLoggedIn={setIsLoggedIn}/>
+      </div>
     </>
   );
 }

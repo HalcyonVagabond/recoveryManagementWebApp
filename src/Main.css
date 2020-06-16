@@ -1,0 +1,13 @@
+#bodyContainer{
+  position: absolute;
+  top: 65px;
+  background-color: lightblue;
+  width: 98vw;
+  left: 1vw;
+  padding: 20px;
+  height: 98vh;
+}
+
+button {
+  cursor: pointer;
+}
