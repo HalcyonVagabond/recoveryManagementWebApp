@@ -11,7 +11,9 @@ const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("providerId");
     setIsLoggedIn(false);
-    history.push("/login");
+    setTimeout(()=>{
+      history.push("/login");
+    },5)
   });
 
   const credentials = sessionStorage.getItem('token');

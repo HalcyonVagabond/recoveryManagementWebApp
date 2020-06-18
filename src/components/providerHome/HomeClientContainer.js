@@ -7,7 +7,18 @@ const {Search} = Input;
 
 const HomeClientContainer = ({caseload}) => {
 
-    const [searchTerm, setSearchTerm] = useState(null)
+    const [searchTerm, setSearchTerm] = useState(null);
+
+    function dragStart(e){
+        const target = e.target;
+        e.dataTransfer.setData('client_id', target.id);
+        setTimeout(()=>{
+            target.style.display = 'none';
+        },0);
+    };
+    function dragOver(e){
+        e.stopPropagation();
+    };
 
     function displayCaseLoad () {
         if (!caseload) {
@@ -20,10 +31,14 @@ const HomeClientContainer = ({caseload}) => {
         } else if (caseload && !searchTerm){
             return (
                 caseload.map(clientProvider=>{
+
                     return (
                     <div
                         draggable={true}
+                        onDragStart={dragStart}
+                        onDragOver={dragOver}
                         key={clientProvider.client_id}
+                        id={clientProvider.client_id}
                         className='homeClientCard lightBlueDiv .ant-alert'
                     >
                         {`${clientProvider.client.user.first_name} ${clientProvider.client.user.last_name} `}

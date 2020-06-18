@@ -20,6 +20,7 @@
   padding: 20px 40px;
   height: 93vh;
   overflow: auto;
+  overflow-x: scroll;
 }
 
 button {

@@ -1,9 +1,24 @@
 .homeContainer{
+    height: 94vh;
+    width: 100vw;
+    position: fixed;
+    padding: 20px;
+    left: 0;
+    overflow: auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     flex-direction: row;
     justify-content: space-around;
 }
+
+@media screen and (max-width: 1000px) {
+    .homeContainer {
+      flex-wrap: wrap !important;
+    }
+    .homeClientContainer{
+        width: 50vw !important;
+    }
+  }
 
 .homeCalendarContainer{
     padding: 20px;
@@ -22,6 +37,7 @@
     width: 35vw;
     min-width: 350px;
     padding: 5px;
+    overflow: auto;
 }
 
 .homeUpcomingEventsContainer {
@@ -32,7 +48,16 @@
     align-items: center;
     background-color: var(--mainMediumBlue);
 }
-
+.timelineDivs{
+    padding: 3px 10px;
+    border-bottom: 1px dashed lightgrey;
+    transition: 0.5s ease;
+}
+.timelineDivs:hover{
+    padding: 4px 10px;
+    transition: 0.5s ease;
+    background-color: var(--mainLightGrey);
+}
 
 /* ************************** */
 /*    Client List Container   */

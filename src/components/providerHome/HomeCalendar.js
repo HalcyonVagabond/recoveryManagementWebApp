@@ -9,7 +9,7 @@ const HomeCalendar = ({setSelectedDate}) => {
 
     const onSelect = value => {
         changeSelectedValue(value)
-        setSelectedDate(moment(value).format('YYYY-MM-DD'))
+        setSelectedDate(moment(value))
     };
 
     const onPanelChange = value => {
