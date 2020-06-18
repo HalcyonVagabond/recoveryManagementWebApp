@@ -27,3 +27,7 @@
 
     border: none;
 }
+
+.loginIcon {
+    border: none !important;
+}

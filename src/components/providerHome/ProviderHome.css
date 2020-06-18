@@ -1,0 +1,76 @@
+.homeContainer{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.homeCalendarContainer{
+    padding: 20px;
+    height: 425px;
+    width: 350px;
+    margin-bottom: 25px;
+    background-color: var(--mainMediumBlue);
+}
+
+/* *********************** */
+/*  Appointment Container  */
+/* *********************** */
+
+.homeAppointmentContainer{
+    height: 82vh;
+    width: 35vw;
+    min-width: 350px;
+    padding: 5px;
+}
+
+.homeUpcomingEventsContainer {
+    height: 245px;
+    width: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--mainMediumBlue);
+}
+
+
+/* ************************** */
+/*    Client List Container   */
+/* ************************** */
+
+.homeClientContainer {
+    background-color: var(--mainMediumBlue);
+    height: 82vh;
+    width: 24vw;
+    min-width: 250px;
+    padding: 5px 10px;
+}
+
+.clientListContainer{
+    height: 57%;
+    overflow: scroll;
+    background: var(--mainLightGrey);
+    padding: 4px 3px;
+    border-radius: 3px;
+}
+
+.homeClientCard{
+    margin: 3px 0px;
+    transition: 0.5s ease;
+}
+
+.homeClientCard:hover{
+    background-color: var(--mainMediumBlue);
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.homeClientContainer .ant-input-group-wrapper{
+    margin-bottom: 5px;
+}
+.homeClientContainer .ant-page-header-heading {
+    justify-content: center;
+    background-color: white;
+    border-radius: 3px;
+}
