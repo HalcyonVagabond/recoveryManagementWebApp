@@ -25,7 +25,7 @@ const homeUpcomingEvents = ({nextAppointment}) => {
         <Card.Header>{nextAppointment.client.user.first_name} {nextAppointment.client.user.last_name}</Card.Header>
         <Card.Meta>Next Appointment</Card.Meta>
         <Card.Description>
-          Steve wants to add you to the group <strong>best friends</strong>
+          {moment().format('YYYY-MM-DD') === moment(nextAppointment.date_time).format('YYYY-MM-DD') ? `Today at ${moment(nextAppointment.date_time).format('hh:mm a')}` : `${moment(nextAppointment.date_time).format('dddd MM/DD/YYYY')} at ${moment(nextAppointment.date_time).format('hh:mm a')}`}
         </Card.Description>
       </Card.Content>
       <Card.Content extra>

@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import {Input, Spin, PageHeader, Avatar} from 'antd'
-import { UserOutlined } from '@ant-design/icons';
-import moment from 'moment'
+import HomeClientCard from './HomeClientCard'
 
 const {Search} = Input;
 
-const HomeClientContainer = ({caseload}) => {
+const HomeClientContainer = ({routerProps, caseload}) => {
 
     const [searchTerm, setSearchTerm] = useState(null);
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+
+    const toggle = () => setTooltipOpen(!tooltipOpen);
 
     function dragStart(e){
         const target = e.target;
@@ -30,21 +32,7 @@ const HomeClientContainer = ({caseload}) => {
             );
         } else if (caseload && !searchTerm){
             return (
-                caseload.map(clientProvider=>{
-
-                    return (
-                    <div
-                        draggable={true}
-                        onDragStart={dragStart}
-                        onDragOver={dragOver}
-                        key={clientProvider.client_id}
-                        id={clientProvider.client_id}
-                        className='homeClientCard lightBlueDiv .ant-alert'
-                    >
-                        {`${clientProvider.client.user.first_name} ${clientProvider.client.user.last_name} `}
-                    </div>
-                    );
-                })
+                caseload.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps}/>)
             );
         }
     };

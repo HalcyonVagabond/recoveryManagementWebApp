@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import Login from './loginSignup/Login'
 import ProviderHome from './providerHome/ProviderHome'
@@ -6,6 +6,9 @@ import IndividualClientView from './individualClientView/IndividualClientView'
 
 
 const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
+
+  const [formSubmitted, setFormSubmitted] = useState(false)
+
   let history = useHistory();
   window.addEventListener("storage", () => {
     sessionStorage.removeItem("token");
@@ -37,7 +40,7 @@ const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
       />
       <Route exact path="/home" render={routerProps =>
         credentials ? (
-          <ProviderHome />
+          <ProviderHome routerProps={routerProps} formSubmitted={formSubmitted} setFormSubmitted={setFormSubmitted}/>
         ) : (
             <Redirect exact to='/login' />
           )}
@@ -50,19 +53,18 @@ const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
           )}
       />
       <Route
-        exact
-        path="/client/:clientId(\d+)"
-        render={(routerProps) => {
-          return (
-            <IndividualClientView
-              clientId={parseInt(routerProps.match.params.clientId)}
-              routerProps={routerProps}
+        path="/clients/:clientId(\d+)"
+        render={(routerProps) => 
+          credentials ? (
+            <IndividualClientView 
+            routerProps={routerProps} 
+            clientId={parseInt(routerProps.match.params.clientId)}
             />
-          );
-        }}
+          ) : (
+              <Redirect exact to='/login' />
+            )}
+        
       />
-
-
       <Route render={props => <Redirect exact to="/" />} />
     </Switch>
   );

@@ -10,6 +10,16 @@ const appointmentManager = {
       }
   })
   .then(resp => resp.json())
+  },
+  postNewAppointment(appointment) {
+    return fetch(`${baseUrl}/appointment`, {
+      method: "POST",
+      headers: { 
+        Accept: "application/json",
+        Authorization: `Token ${sessionStorage.getItem("token")}`,
+      }, 
+      body:appointment
+    }).then((resp) => resp.json());
   }
 };
 

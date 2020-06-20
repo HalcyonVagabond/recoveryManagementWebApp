@@ -8,7 +8,7 @@ import HomeClientContainer from './HomeClientContainer'
 import moment from 'moment'
 import './ProviderHome.css'
 
-const ProviderHome = () => {
+const ProviderHome = ({routerProps, formSubmitted, setFormSubmitted}) => {
     const [caseload, setCaseload] = useState(null);
     const [appointments, setAppointments] = useState(null);
     const [nextAppointment, setNextAppointment] = useState(null);
@@ -30,7 +30,6 @@ const ProviderHome = () => {
                 return new Date(a.date_time) - new Date(b.date_time) ;
             });
             setAppointments(sorted)
-            setSelectedDateAppointments(sorted.filter(appt=> moment().format('YYYY-MM-DD') === moment(appt.date_time).format('YYYY-MM-DD')))
             setNextAppointment(sorted.filter(appt => new Date(appt.date_time) > new Date())[0])
             console.log("Appointments", resp)
         });
@@ -39,11 +38,15 @@ const ProviderHome = () => {
     useEffect(()=>{
         getClients()
         getAppointments()
-    },[])
+    },[formSubmitted])
 
     useEffect(()=>{
-        console.log("selected date", selectedDate)
-    }, [selectedDate])
+        if(appointments){
+            setSelectedDateAppointments(appointments.filter(appt=> {
+                return selectedDate.format('YYYY-MM-DD') === moment(appt.date_time).format('YYYY-MM-DD')
+            }))
+        }
+    }, [selectedDate, appointments])
     
 
     return (
@@ -52,8 +55,8 @@ const ProviderHome = () => {
                 <HomeCalendar setSelectedDate={setSelectedDate}/>
                 <HomeUpcomingEvents nextAppointment={nextAppointment}/>
             </div>
-            <HomeAppointmentContainer selectedDate={selectedDate} />
-            <HomeClientContainer caseload={caseload}/>
+            <HomeAppointmentContainer selectedDate={selectedDate} selectedDateAppointments={selectedDateAppointments} caseload={caseload} formSubmitted={formSubmitted} setFormSubmitted={setFormSubmitted}/>
+            <HomeClientContainer caseload={caseload} routerProps={routerProps}/>
         </section>
     )
 };
