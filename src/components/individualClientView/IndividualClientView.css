@@ -21,12 +21,25 @@
     background-color: #2f85c4;
     color: white;
 }
-.patientNotesContainer{
+.noteListHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.noteListHeader .circleButton{
+    margin-right: 45px;
+}
+.clientNotesContainer{
     position: absolute;
-    width: 73%;
-    left: 290px;
-    padding: 0px 25px;
+    width: 70%;
+    left: 315px;
+    padding: 7px 25px;
     box-shadow: 3px 3px 3px 3px lightgrey;
+    background-color: var(--mainMediumBlue);
+}
+.clientNotesContainer .innerContent{
+    background-color: var(--mainLightGrey) !important;
 }
 .notesSection{
     padding: 15px 15px;
@@ -51,26 +64,50 @@
     border-left: 1px solid lightgrey;
     border-right: 1px solid lightgrey;
 }
-.therapist{
+
+.noteList{
+    height: 55vh;
+    overflow: auto;
+}
+.noteListContainer{
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 64vh;
+}
+
+.noteList > *{
+    cursor: pointer;
+}
+
+.therapistNote{
     background-color: #f7969a !important;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
 }
 /* .therapist:hover{
     background-color: lightcoral!important;
 } */
-.medical{
+.medical-doctorNote{
     background-color: #9bea92 !important;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
 }
 /* .medical:hover{
     background-color: #72b96a !important;
 } */
-.psychiatrist{
+.psychiatristNote{
     background-color: lightskyblue;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
 }
 /* .psychiatrist:hover{
     background-color: #2f85c4;
 } */
-.sw{
-    background-color: lightyellow;
+.social-workerNote{
+    background-color: #ffff99;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
 }
 /* .sw:hover{
     color: white !important;
@@ -83,4 +120,32 @@
     margin-left: auto !important;
     margin-right: auto !important;
     margin-bottom: 10px;
+    position: absolute;
+    bottom: 35px;
+    left: 33%;
+}
+
+/* Add Note Modal */
+
+.noteFormModal{
+    position: fixed;
+    top: 15%;
+    right: 10vw;
+    width: 80vw;
+    min-width: 460px;
+    height: 75vh;
+    min-height: 560px;
+    padding: 50px 35px 0px 35px;
+    border-radius: 40px;
+    background: #ecf0f3;
+    box-shadow: 13px 13px 20px #b2b3b3, -13px -13px 20px #b3b3b3;
+    z-index: 1000;
+}
+
+.noteFormModal .innerContent{
+    padding: 5px 35px 15px 35px;
+}
+.noteFormModal .innerContent #content{
+    height: 80%;
+    margin: 5px 0 15px 0;
 }

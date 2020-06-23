@@ -6,14 +6,19 @@ import moment from 'moment';
 const homeUpcomingEvents = ({nextAppointment}) => {
 
     function loadingConditional(){
-        if (!nextAppointment){
+        if (nextAppointment === null){
             return (
                 <>
                 <h3>Loading Next Appointment</h3>
                 <Spin size="large" />
                 </>
             )
-        } else {
+        } else if(nextAppointment === undefined) {
+            return (
+              <h3>No Upcoming Appointments</h3>
+            )
+          
+         } else{
             return (
                 <Card>
       <Card.Content>

@@ -1,30 +1,67 @@
-import React, { useState } from 'react'
-import { PageHeader, Menu, Collapse, Pagination} from 'antd';
-import { CalendarOutlined ,SettingOutlined, AppstoreOutlined, MailOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react'
+import { PageHeader, Menu, Collapse, Pagination, Spin } from 'antd';
+import { Grid, Icon, Button } from 'semantic-ui-react'
+import {UncontrolledCollapse, Card, CardBody} from 'reactstrap'
+import { CalendarOutlined, SettingOutlined, AppstoreOutlined, MailOutlined } from '@ant-design/icons';
 import ClientNoteCard from './ClientNoteCard'
-
+import EditNoteModal from './EditNoteModal'
+import AddNoteModal from './AddNoteModal'
+import moment from 'moment'
 
 const { SubMenu } = Menu
-const { Panel } = Collapse;
 
-const PatientNotes = () => {
+const PatientNotes = ({client, clientNotes, setFormSubmitted, routerProps}) => {
+    const [noteFormOpen, changeNoteFormOpen] = useState(false)
+    
+    function toggleForm(){
+        changeNoteFormOpen(!noteFormOpen)
+        document.getElementById('greyBackground').classList.toggle('hidden')
+    }
 
-    const text = `
-    EXAMPLE COLLATERAL (Family Therapy 311)
-    1: Met with mom and client to facilitate a family session. Provided a safe place for mom and client to
-    express their concerns and emotions.
-    2: Mom requested to meet with clinician and client because she is having a difficult time with client at home.
-    Provided a safe place for mom and client to express their concerns at home. Mom was able to express
-    her emotions and client used his listening skills, however, disagreed with mom. Clinician guided mom
-    and client to express their concerns in a positive way, and helped them reframe their negative words to
-    help clarify their feelings. Discussed client’s increased aggression and disrespectful behaviors. Client
-    was able to listen and share his frustrations with mom. Client was able to share he is being bullied at
-    school. Discussed ways client and mom can support each other at home and created a safety plan due
-    to the client’s increased violent behaviors. Discussed possible referral for a psychiatric evaluation for
-    client.
-    3: Clinician will follow up with an individual session with client and also possible medication evaluation
-    referral.
-        `;
+    function createNoteDivs(){
+        console.log("Client Notes",clientNotes)
+        if(clientNotes === null){
+            return <Spin size='large' />
+        } else if (clientNotes == undefined){
+            return (<h3 style={{color: 'black'}}>Client has no notes</h3>)
+        } else {
+            return (
+                clientNotes.map(note=>{
+                    function editButtonConditional(){
+                        if(note.provider_id == sessionStorage.getItem('providerId')){
+                            return <EditNoteModal client={client} setFormSubmitted={setFormSubmitted} note={note}/>
+                        }
+                    }
+                    return(
+                        <div key={`note${note.id}Container`}>
+                        <Grid key={note.id} id={`note${note.id}`} columns={4} padded className={`${note.provider.provider_type.name.toLowerCase()}Note`}>
+                            <Grid.Column>
+                                {moment(note.date_time).format('MM/DD/YYYY h:mm a')}
+                            </Grid.Column>
+                            <Grid.Column>
+                                Note Type
+                            </Grid.Column>
+                            <Grid.Column>
+                                {note.provider.user.first_name} {note.provider.user.last_name}
+                            </Grid.Column>
+                            <Grid.Column>
+                                {note.provider.provider_type.name}
+                            </Grid.Column>
+                        </Grid>
+                        <UncontrolledCollapse toggler={`#note${note.id}`}>
+                        <Card>
+                          <CardBody>     
+                            {note.content}
+                          </CardBody>
+                          {editButtonConditional()}
+                        </Card>
+                      </UncontrolledCollapse>
+                      </div>
+                    )
+                })
+            )
+        }
+    }
 
     const [current, changeCurrent] = useState('date')
 
@@ -33,21 +70,30 @@ const PatientNotes = () => {
         changeCurrent(e.key)
     };
 
+    useEffect(()=>{
+        createNoteDivs()
+    },[clientNotes])
+
     return (
-        <section className='patientNotesContainer'>
+        <section className='clientNotesContainer boxContainer'>
+            <article className='noteListHeader'>
             <PageHeader
                 className="site-page-header"
-                onBack={() => null}
+                onBack={() => routerProps.history.goBack()}
                 title="Notes"
                 subTitle="Use the searchbar to filter content"
             />
+                <div className='circleButton clickable'>
+                    <Icon name='file alternate' size='large' id='homeAddAppointment' onClick={toggleForm}/>
+                </div>
+            </article>
             <Menu className='notesSearchbar' onClick={handleClick} selectedKeys={[current]} mode="horizontal">
                 <Menu.Item key="date" icon={<CalendarOutlined />}>
                     Date
-        </Menu.Item>
+            </Menu.Item>
                 <Menu.Item key="title" icon={<AppstoreOutlined />}>
                     Title
-        </Menu.Item>
+            </Menu.Item>
                 <SubMenu icon={<SettingOutlined />} title="Practitioner Type">
                     <Menu.ItemGroup>
                         <Menu.Item key="setting:1">Medical</Menu.Item>
@@ -56,64 +102,21 @@ const PatientNotes = () => {
                         <Menu.Item key="setting:4">Social Worker</Menu.Item>
                     </Menu.ItemGroup>
                 </SubMenu>
-                <Menu.Item key="type" icon={<MailOutlined/>}>
+                <Menu.Item key="type" icon={<MailOutlined />}>
                     Note Type
-        </Menu.Item>
+                </Menu.Item>
             </Menu>
-            <Collapse className='notesSection' accordion >
-                <Panel className='note psychiatrist' header="05/20/2020 - - - Bon's Lithium Levels - - - Psychiatrist - - -1 " key="1" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note medical' header="This is panel header 1" key="2" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note sw' header="This is panel header 2" key="3" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note therapist' header="This is panel header 3" key="4" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note therapist' header="This is panel header 3" key="5" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note psychiatrist' header="05/20/2020 - - - Bon's Lithium Levels - - - Psychiatrist - - -1 " key="6" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note medical' header="This is panel header 1" key="7" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note sw' header="This is panel header 2" key="8" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note medical' header="This is panel header 1" key="9" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note psychiatrist' header="05/20/2020 - - - Bon's Lithium Levels - - - Psychiatrist - - -1 " key="10" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note psychiatrist' header="05/20/2020 - - - Bon's Lithium Levels - - - Psychiatrist - - -1 " key="11" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-                <Panel className='note sw' header="This is panel header 2" key="12" showArrow={false}>
-                    <p>{text}</p>
-                    <ClientNoteCard />
-                </Panel>
-            </Collapse>
+            <article className='noteListContainer innerContent'>
+            <div className='noteList'>
+                {createNoteDivs()}
+            </div>
             <Pagination className='notesPagination' defaultCurrent={1} total={50} />
+            </article>
+            <AddNoteModal client={client} noteFormOpen={noteFormOpen} changeNoteFormOpen={changeNoteFormOpen} setFormSubmitted={setFormSubmitted} />
         </section>
     );
 
 };
 
 export default PatientNotes;
+

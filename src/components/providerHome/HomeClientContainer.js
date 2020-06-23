@@ -4,7 +4,7 @@ import HomeClientCard from './HomeClientCard'
 
 const {Search} = Input;
 
-const HomeClientContainer = ({routerProps, caseload}) => {
+const HomeClientContainer = ({routerProps, caseload, setDraggedDivData, formSubmitted}) => {
 
     const [searchTerm, setSearchTerm] = useState(null);
     const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -14,9 +14,7 @@ const HomeClientContainer = ({routerProps, caseload}) => {
     function dragStart(e){
         const target = e.target;
         e.dataTransfer.setData('client_id', target.id);
-        setTimeout(()=>{
-            target.style.display = 'none';
-        },0);
+        
     };
     function dragOver(e){
         e.stopPropagation();
@@ -32,14 +30,15 @@ const HomeClientContainer = ({routerProps, caseload}) => {
             );
         } else if (caseload && !searchTerm){
             return (
-                caseload.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps}/>)
+                caseload.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps} setDraggedDivData={setDraggedDivData}/>)
             );
         }
     };
 
     useEffect(()=>{
         displayCaseLoad()
-    },[caseload, searchTerm])
+        console.log('supposed to reload clients')
+    },[caseload, searchTerm, formSubmitted])
 
     return (
         <article className='homeClientContainer boxContainer centerContent'>
