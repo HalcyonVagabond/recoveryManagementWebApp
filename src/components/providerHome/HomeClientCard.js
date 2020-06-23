@@ -42,7 +42,7 @@ const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData}) => {
         >
             {`${clientProvider.client.user.first_name} ${clientProvider.client.user.last_name} `}
 
-            <span style={{textDecoration: "underline", color:"blue"}} onClick={clickDetails} id={`clientDetails-${clientProvider.client_id}`}>details</span>
+            <span style={{textDecoration: "underline", color:"var(--mainMediumBlue)"}} onClick={clickDetails} id={`clientDetails-${clientProvider.client_id}`}>details</span>
             <Tooltip placement="top" isOpen={tooltipOpen} target={`clientDetails-${clientProvider.client_id}`} toggle={toggle}>
               View {user.first_name}'s details
             </Tooltip>
