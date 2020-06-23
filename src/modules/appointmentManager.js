@@ -28,6 +28,16 @@ const appointmentManager = {
                 "Authorization": `Token ${sessionStorage.getItem("token")}`
             }
         })
+  },
+  updateAppointment(updatedAppointment, appointmentId) {
+    return fetch(`${baseUrl}/appointment/${appointmentId}`, {
+      "method": "PUT",
+      "headers": {
+        "Accept": "application/json",
+        "Authorization": `Token ${sessionStorage.getItem("token")}`
+      },
+      "body": updatedAppointment
+    })
   }
 };
 

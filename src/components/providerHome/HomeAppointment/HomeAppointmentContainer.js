@@ -4,7 +4,9 @@ import { CloseOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import HomeAppointmentFormModal from './HomeAppointmentFormModal'
 import HomeDroppedAppointment from './HomeDroppedAppointment'
+import HomeEditAppointment from './HomeEditAppointment'
 import appointmentManager from '../../../modules/appointmentManager'
+
 
 const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, formSubmitted, setFormSubmitted, draggedDivData}) => {
 
@@ -12,10 +14,16 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
     const [droppedAppointmentOpen, changeDroppedAppointmentOpen]=useState(false)
     const [droppedTime, setDroppedTime] = useState(null)
     const [idToHide, setIdToHide] = useState(null)
+    const [editFormAppointment, setEditFormAppointment] = useState(null)
+    const [editFormOpen, changeEditFormOpen] = useState(false)
 
     function toggleForm(){
         changeAppointmentFormOpen(!appointmentFormOpen)
         document.getElementById('greyBackground').classList.toggle('hidden')
+    }
+    function editToggleForm(){
+        changeEditFormOpen(!editFormOpen)
+        document.getElementById('greyBackground-edit').classList.toggle('hidden')
     }
 
     function droppedFormToggle(){
@@ -73,10 +81,14 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
                         id={`blahbblah----${exactAppointment.id}`} 
                         key={`${hour}:${minute}`} 
                         > 
-                        {i<12 ? `${i}:${minute} am`: `${i===12 ? i : i-12}:${minute} pm`} 
-                    <h4>{exactAppointment.client.user.first_name}</h4>
-                    <p>email: {exactAppointment.client.user.email}</p>
-                    <CloseOutlined className='cancelAppointment' onClick={()=>handleCancelAppointment(exactAppointment)}/>
+                            {i<12 ? `${i}:${minute} am`: `${i===12 ? i : i-12}:${minute} pm`} 
+                            <h5>{exactAppointment.client.user.first_name} {exactAppointment.client.user.last_name}</h5>
+                            <p>email: {exactAppointment.client.user.email}</p>
+                            <span style={{textDecoration: "underline", color:"var(--mainMediumBlue)"}} id={`edit-${exactAppointment.id}`} onClick={()=>{
+                                setEditFormAppointment(exactAppointment)
+                                editToggleForm()
+                            }}>edit</span>
+                            <CloseOutlined className='cancelAppointment' onClick={()=>handleCancelAppointment(exactAppointment)}/>
                     </div>
                     )
                     if(exactAppointment.duration === 60 && j===0){
@@ -111,11 +123,13 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
     useEffect(()=>{
         generateTimeDivs()
     },[formSubmitted])
-
+    useEffect(()=>{
+        console.log("Edit Form Appt",editFormAppointment)
+    },[editFormAppointment])
     
     return (
         <section className='homeAppointmentContainer boxContainer'>
-            <HomeAppointmentFormModal appointmentFormOpen={appointmentFormOpen} changeAppointmentFormOpen={changeAppointmentFormOpen} selectedDate={selectedDate} caseload={caseload} setFormSubmitted={setFormSubmitted}/>
+            <HomeAppointmentFormModal appointmentFormOpen={appointmentFormOpen} changeAppointmentFormOpen={changeAppointmentFormOpen} selectedDate={selectedDate} caseload={caseload} setFormSubmitted={setFormSubmitted} editFormAppointment={editFormAppointment} setEditFormAppointment={setEditFormAppointment}/>
             <div className='appointmentContainerHeader centerContent'>
                 <div>
                     <h3>Appointments</h3>
@@ -131,6 +145,7 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
                 {generateTimeDivs()}
             </div>
             <HomeDroppedAppointment droppedFormToggle={droppedFormToggle} droppedAppointmentOpen={droppedAppointmentOpen} setFormSubmitted={setFormSubmitted} draggedDivData={draggedDivData} droppedTime={droppedTime} idToHide={idToHide}/>
+            <HomeEditAppointment editFormOpen={editFormAppointment} changeEditFormOpen={changeEditFormOpen} selectedDate={selectedDate} setFormSubmitted={setFormSubmitted} editFormAppointment={editFormAppointment} setEditFormAppointment={setEditFormAppointment}/>
         </section>
     );
 };
