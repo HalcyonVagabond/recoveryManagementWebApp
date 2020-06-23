@@ -20,6 +20,14 @@ const appointmentManager = {
       }, 
       body:appointment
     }).then((resp) => resp.json());
+  },
+  deleteAppointment(appointment){
+    return fetch(`${baseUrl}/appointment/${appointment.id}`, {
+      "method": "DELETE",
+            "headers": {
+                "Authorization": `Token ${sessionStorage.getItem("token")}`
+            }
+        })
   }
 };
 

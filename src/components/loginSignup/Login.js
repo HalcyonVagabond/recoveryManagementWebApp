@@ -41,7 +41,8 @@ const Login = ({ routerProps, loggedIn, setIsLoggedIn }) => {
 
     return (
         <div id='greyBackground'>
-            <section id='creationForm'>
+            <section id='creationForm' className='boxContainer'>
+                <div className='innerContent'>
                 <Header as='h2' icon>
                     <Icon className='loginIcon' name='address card outline' />
                     Cooperative Recovery
@@ -72,7 +73,7 @@ const Login = ({ routerProps, loggedIn, setIsLoggedIn }) => {
                         <Button type="Submit">Login</Button>
                     </FormGroup>
                 </Form>
-                <a href="http://localhost:3000/register">Register</a>
+                </div>
             </section>
         </div>
     );

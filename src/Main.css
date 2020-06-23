@@ -36,7 +36,7 @@ button {
 
 .boxContainer {
   border: var(--lightBorder);
-  border-radius: 3px;
+  border-radius: 10px;
   box-shadow: 13px 13px 20px #cbced1,
   -13px -13px 20px #ffffff;
   margin: 15px 10px;
@@ -88,7 +88,7 @@ button {
   background-image: -ms-linear-gradient(top, #f7f7f7, #e7e7e7); 
   background-image: -o-linear-gradient(top, #f7f7f7, #e7e7e7); 
   color: #555;
-  margin: 15px;
+  margin: 10px;
   width: 48px;
   height: 48px;
   position: relative;
@@ -103,19 +103,17 @@ button {
   background: #f5f5f5;
   box-shadow: 0px 3px 6px #aaa, inset 0px 2px 3px #fff;
 }
-.circleButton::before {
+.circleButtonBorder {
   content: "";
   display: block;
   background: #fff;
   border-top: 2px solid #ddd;
-  position: absolute;
-  top: -12px;
+  position: relative;
+  top: 0px;
   left: -12px;
-  bottom: -12px;
-  right: -12px;
-  z-index: -1;
+  z-index: 2;
   border-radius: 50%;
-  box-shadow: inset 0px 3px 10px #ddd;
+  box-shadow: inset 0px 5px 5px #ddd;
 }
 .circleButton:active{
   background-color: #f3f3f3;
@@ -123,6 +121,24 @@ button {
   transition: 0.15s ease;
 }
 
+#greyBackground {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(189, 189, 189, 0.7);
+  z-index: 1000;
+}
+#droppedGreyBackground {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(189, 189, 189, 0.7);
+  z-index: 1000;
+}
 .greyBackground {
   position: fixed;
   left: 0;
@@ -131,4 +147,7 @@ button {
   width: 100vw;
   background-color: rgba(189, 189, 189, 0.7);
   z-index: 1000;
+}
+.hidden{
+  display: none !important;
 }

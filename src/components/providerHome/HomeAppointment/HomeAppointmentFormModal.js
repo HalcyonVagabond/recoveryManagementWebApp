@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Transition, Dropdown, Button} from 'semantic-ui-react'
 import {DatePicker} from 'antd'
 import moment from 'moment'
-import appointmentManager from '../../modules/appointmentManager'
+import appointmentManager from '../../../modules/appointmentManager'
 
 const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpen, selectedDate, caseload, setFormSubmitted}) => {
     const [formValues, setFormValues] = useState({date: selectedDate.format("YYYY-MM-DD"), duration: 30})
@@ -59,6 +59,7 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
           console.log(appointmentReturn)
           setFormSubmitted(true)
           changeAppointmentFormOpen(false)
+          document.getElementById('greyBackground').classList.toggle('hidden')
       })
       
     }
@@ -69,7 +70,7 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
                 const clientUser = providerClient.client.user
                    return ({
                     key: providerClient.client_id,
-                    text: `${clientUser.first_name} ${clientUser.last_name} ${moment(providerClient.client.birth_date).format('MM/DD/YYYY')}`,
+                    text: `${clientUser.first_name} ${clientUser.last_name} ${moment().diff(moment(providerClient.client.birth_date), 'years')} y.o. ${providerClient.client.gender}`,
                     value: providerClient.client_id
                     })
             
@@ -88,7 +89,7 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
             )}
         return hourArray
     } 
-    
+    const selectedDateFunc = () => selectedDate
     function timeOfDayOptions(){
         if(time.am_pm === 'am'){
             return 'am'
@@ -98,10 +99,9 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
     };
 
     useEffect(()=>{
-        console.log(formValues)
-        console.log(`${formValues.date}T${time.am_pm === 'pm' ? ((parseInt(time.hour) + 12).toString()): time.hour}:${time.minute} ${moment().format('Z')}`)
-
-    },[formValues, time])
+        selectedDateFunc()
+        console.log(selectedDate)
+    },[selectedDate])
 
     useEffect(()=>{
         timeOfDayOptions()
@@ -109,13 +109,13 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
     
     return (
         
+        <div id='greyBackground' className='hidden'>
         <Transition visible={appointmentFormOpen} animation='drop' duration={500}>
-            <div className='greyBackground'>
             <div className='appointmentFormContainer'>
                 <form className='innerContent' onSubmit={handleSubmit}>
                     <h3 className='title'>Create Appointment</h3>
                     <Dropdown id='client_id' className='field' options={clientOptions} placeholder='Select Client' search selection onChange={handleClientChange} required/>
-                    <DatePicker id='date_time' className='field' defaultValue={selectedDate} onSelect={setCalendarDate}/>
+                    <DatePicker id='date_time' className='field' defaultValue={selectedDateFunc} onSelect={setCalendarDate}/>
                     <h5 className='field'>Select Time: </h5>
                     <div className='timeSelectContainer' style={{'display': 'flex'}}>
                       <select id='hour' onChange={handleTimeChange} className='timeSelect' placeholder='Hour' required>
@@ -139,14 +139,18 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
                         <Button type='submit'>
                                 Save
                         </Button>
-                        <Button onClick={()=>changeAppointmentFormOpen(false)}>
+                        <Button onClick={(e)=>{
+                            e.preventDefault()
+                            changeAppointmentFormOpen(false)
+                            document.getElementById('greyBackground').classList.toggle('hidden')
+                            }}>
                             Cancel
                         </Button>
                     </div>
                 </form>
             </div>
-            </div>
         </Transition>
+        </div>
     )
 };
 

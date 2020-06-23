@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Tooltip} from 'reactstrap'
 
 
-const HomeClientCard = ({routerProps, clientProvider}) => {
+const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData}) => {
     const client = clientProvider.client
     const user = clientProvider.client.user
 
@@ -10,14 +10,10 @@ const HomeClientCard = ({routerProps, clientProvider}) => {
 
     const toggle = () => {
         if(!tooltipOpen){
-            setTimeout(()=>{
                 setTooltipOpen(!tooltipOpen);
-            }, 1000)
         }else {
             setTooltipOpen(false);
         }
-        console.log("111111", client)
-        console.log("22222", user)
     }
 
     function clickDetails(e){
@@ -26,20 +22,20 @@ const HomeClientCard = ({routerProps, clientProvider}) => {
 
     function dragStart(e){
         const target = e.target;
+        console.log(e.target.value)
+        setDraggedDivData(clientProvider)
         e.dataTransfer.setData('client_id', target.id);
-        setTimeout(()=>{
-            target.style.display = 'none';
-        },0);
+
     };
-    function dragOver(e){
-        e.stopPropagation();
-    };
+    // function dragOver(e){
+    //     e.stopPropagation();
+    // };
 
     return (
         <div
             draggable={true}
             onDragStart={dragStart}
-            onDragOver={dragOver}
+            // onDragOver={dragOver}
             key={clientProvider.client_id}
             id={clientProvider.client_id}
             className='homeClientCard lightBlueDiv .ant-alert'

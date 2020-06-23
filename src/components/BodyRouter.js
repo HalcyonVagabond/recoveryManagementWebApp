@@ -13,10 +13,10 @@ const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
   window.addEventListener("storage", () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("providerId");
-    setIsLoggedIn(false);
     setTimeout(()=>{
+      setIsLoggedIn(false);
       history.push("/login");
-    },5)
+    }, 200)
   });
 
   const credentials = sessionStorage.getItem('token');
@@ -59,6 +59,8 @@ const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
             <IndividualClientView 
             routerProps={routerProps} 
             clientId={parseInt(routerProps.match.params.clientId)}
+            formSubmitted={formSubmitted}
+            setFormSubmitted={setFormSubmitted}
             />
           ) : (
               <Redirect exact to='/login' />
