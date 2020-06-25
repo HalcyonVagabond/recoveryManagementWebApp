@@ -3,6 +3,7 @@
     width: 100vw;
     position: fixed;
     padding: 20px;
+    padding-bottom: 40px;
     left: 0;
     overflow: auto;
     display: flex;
@@ -36,11 +37,13 @@
     height: 80vh;
     width: 35vw;
     min-width: 350px;
+    min-height: 325px;
     padding: 1px;
     padding-left: 3px;
     padding-right: 3px;
     overflow: auto;
     position: relative;
+    resize: both;
 }
 
 .homeUpcomingEventsContainer {
@@ -120,9 +123,21 @@
     height: 80vh;
     width: 24vw;
     min-width: 250px;
+    min-height: 300px;
     padding: 5px 10px;
+    position: relative;
+    resize: both;
+    overflow: auto;
 }
-
+.appointmentClientContainer{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    transition: 1s ease;
+}
 .clientListContainer{
     height: 60%;
     overflow: scroll;
@@ -169,6 +184,7 @@
     box-shadow: 13px 13px 20px #b2b3b3, -13px -13px 20px #b3b3b3;
     z-index: 1000;
 }
+
 .innerContent {
     display: flex;
     flex-direction: column;
@@ -194,10 +210,26 @@
     margin-left: auto;
     margin-right: auto;
 }
+.innermostContent{
+    color: #555;
+    background-color: #ecf0f3;
+    margin: 8px 30px !important;
+    padding: 10px;
+    height: 100%;
+    justify-content: space-around;
+    display: flex;
+    border-radius: 10px;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 0 26px 0px lightgrey;
+}
 .timeSelectContainer{
     justify-content: center;
     margin-bottom: 20px;
     width: 80%;
+
+    padding-left: 50px;
+
     margin-left: auto;
     margin-right: auto;
 }
@@ -206,7 +238,7 @@
     min-width: 60px !important;
 }
 .innerContent #duration {
-    width: 30% !important;
+    width: 33% !important;
 }
 .innerContent button, .innerContent fieldset{
     margin-right: 20px;

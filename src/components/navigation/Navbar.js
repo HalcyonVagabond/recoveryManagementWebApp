@@ -14,6 +14,25 @@ const Navbar = () => {
     changeSelected(e.key)
   };
 
+  function loginOrLogout(){
+    if(sessionStorage.getItem('token')){
+      return (
+        <Menu.Item key="logout" onClick={()=>{
+          sessionStorage.clear()
+          window.location = '/'
+          }}>
+          Logout
+        </Menu.Item>
+      )
+    } else {
+      return (
+        <Menu.Item key="login" onClick={()=>window.location = '/'}>
+          Login
+        </Menu.Item>
+      )
+    }
+  }
+
     return (
       <section className='headerContainer'>
         <div className='logo'>
@@ -29,6 +48,7 @@ const Navbar = () => {
         <Menu.Item key="alipay">
           TheHub
         </Menu.Item>
+        {loginOrLogout()}
       </Menu>
       </section>
     );

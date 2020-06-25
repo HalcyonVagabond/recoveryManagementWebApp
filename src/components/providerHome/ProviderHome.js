@@ -58,8 +58,10 @@ const ProviderHome = ({routerProps, formSubmitted, setFormSubmitted}) => {
                 <HomeCalendar setSelectedDate={setSelectedDate}/>
                 <HomeUpcomingEvents nextAppointment={nextAppointment}/>
             </div>
+            <div className='appointmentClientContainer'>
             <HomeAppointmentContainer selectedDate={selectedDate} selectedDateAppointments={selectedDateAppointments} caseload={caseload} formSubmitted={formSubmitted} setFormSubmitted={setFormSubmitted} appointmentFormOpen={appointmentFormOpen} changeAppointmentFormOpen={changeAppointmentFormOpen} draggedDivData={draggedDivData}/>
             <HomeClientContainer caseload={caseload} routerProps={routerProps} setDraggedDivData={setDraggedDivData} formSubmitted={formSubmitted}/>
+            </div>
         </section>
     )
 };

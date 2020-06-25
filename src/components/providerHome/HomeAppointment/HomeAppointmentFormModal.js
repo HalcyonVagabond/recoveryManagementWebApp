@@ -52,7 +52,7 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
         console.log(`${formValues.date}T${(time.am_pm === 'pm' && parseInt(time.hour<12)) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}${moment().format('Z')}`)
         const formData = new FormData();
         formData.append('client_id', formValues.client_id);
-        formData.append('date_time', `${formValues.date}T${(time.am_pm == 'pm' && parseInt(time.hour)<12) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}${moment().format('Z')}`);
+        formData.append('date_time', `${formValues.date}T${(time.am_pm == 'pm' && parseInt(time.hour)<12) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}:00${moment().format('Z')}`);
         formData.append('duration', formValues.duration);
       
       appointmentManager.postNewAppointment(formData).then((appointmentReturn) => {
@@ -112,7 +112,8 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
         <div id='greyBackground' className='hidden'>
         <Transition visible={appointmentFormOpen} animation='drop' duration={500}>
             <div className='appointmentFormContainer'>
-                <form className='innerContent' onSubmit={handleSubmit}>
+            <div className='innerContent'>
+                <form className='innermostContent' onSubmit={handleSubmit}>
                     <h3 className='title'>Create Appointment</h3>
                     <Dropdown id='client_id' className='field' options={clientOptions} placeholder='Select Client' search selection onChange={handleClientChange} required />
                     <DatePicker id='date_time' className='field' defaultValue={selectedDateFunc} onSelect={setCalendarDate}/>
@@ -148,6 +149,7 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
                         </Button>
                     </div>
                 </form>
+                </div>
             </div>
         </Transition>
         </div>
