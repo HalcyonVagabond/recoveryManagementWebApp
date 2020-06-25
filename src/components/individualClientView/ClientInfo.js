@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Card, Avatar, Collapse } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined, AppstoreOutlined, MailOutlined } from '@ant-design/icons';
+import moment from 'moment'
 
 const { Meta } = Card;
 const { Panel } = Collapse;
 
-const PatientInfo = () => {
+const PatientInfo = ({client}) => {
 
     const text = `
   A dog is a type of domesticated animal.
@@ -30,8 +31,8 @@ const PatientInfo = () => {
             >
                 <Meta
                     avatar={<Avatar src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_153382.png&f=1&nofb=1" />}
-                    title="Bon Scott"
-                    description="33 y.o. Male"
+                    title={client ? `${client.user.first_name} ${client.user.last_name}` : ""}
+                    description={client? `${moment().diff(moment(client.birth_date), 'years')} y.o. ${client.gender}` : ""}
                 />
             </Card>
             <Collapse accordion>

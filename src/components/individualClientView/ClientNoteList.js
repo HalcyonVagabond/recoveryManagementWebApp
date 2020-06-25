@@ -72,7 +72,7 @@ const PatientNotes = ({client, clientNotes, setFormSubmitted, routerProps}) => {
 
     useEffect(()=>{
         createNoteDivs()
-    },[clientNotes])
+    },[clientNotes, setFormSubmitted])
 
     return (
         <section className='clientNotesContainer boxContainer'>

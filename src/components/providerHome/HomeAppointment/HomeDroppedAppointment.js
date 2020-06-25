@@ -33,7 +33,8 @@ const HomeDroppedAppointmentModal = ({droppedAppointmentOpen, droppedFormToggle,
         <div id='droppedGreyBackground' className='hidden'>
         <Transition visible={droppedAppointmentOpen} animation='drop' duration={500}>
             <div className='appointmentFormContainer'>
-                <form className='innerContent' onSubmit={handleSubmit}>
+            <div className='innerContent'>
+                <form className='innermostContent' onSubmit={handleSubmit}>
                     <h3 className='title'>Create Appointment</h3>
                     <h4>{draggedDivData ? `Client: ${draggedDivData.client.user.first_name} ${draggedDivData.client.user.last_name}` :  'Client:'}</h4>
                     <br/>
@@ -58,6 +59,7 @@ const HomeDroppedAppointmentModal = ({droppedAppointmentOpen, droppedFormToggle,
                         </Button>
                     </div>
                 </form>
+                </div>
             </div>
         </Transition>
         </div>

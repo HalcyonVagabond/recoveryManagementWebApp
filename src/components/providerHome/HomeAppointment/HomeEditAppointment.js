@@ -48,7 +48,7 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
         console.log(`${formValues.date}T${(time.am_pm === 'pm' && parseInt(time.hour<12)) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}${moment().format('Z')}`)
         const formData = new FormData();
         formData.append('client_id', editFormAppointment.client_id);
-        formData.append('date_time', `${formValues.date}T${(time.am_pm == 'pm' && parseInt(time.hour)<12) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}${moment().format('Z')}`);
+        formData.append('date_time', `${formValues.date}T${(time.am_pm == 'pm' && parseInt(time.hour)<12) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}:00${moment().format('Z')}`);
         formData.append('duration', formValues.duration);
       
         if(editFormAppointment){
@@ -118,7 +118,9 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
         <div id='greyBackground-edit' className='greyBackground hidden'>
         <Transition visible={editFormOpen} animation='drop' duration={500}>
             <div className='appointmentFormContainer'>
-                <form className='innerContent' onSubmit={handleSubmit}>
+                <div className='innerContent'>
+                <form className='innermostContent' onSubmit={handleSubmit}>
+
                     <h3 className='title'>{editFormAppointment ? 'Update Appointment' : 'Create Appointment'}</h3>
                     <h4>{editFormAppointment?`${editFormAppointment.client.user.first_name} ${editFormAppointment.client.user.last_name} ${moment().diff(moment(editFormAppointment.client.birth_date), 'years')} y.o. ${editFormAppointment.client.gender}`:null}</h4>
                     <DatePicker id='date_time' className='field' defaultValue={selectedDateFunc} onSelect={setCalendarDate}/>
@@ -156,6 +158,7 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
                         </Button>
                     </div>
                 </form>
+                </div>
             </div>
         </Transition>
         </div>
