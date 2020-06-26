@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Card, Avatar, Collapse } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined, AppstoreOutlined, MailOutlined } from '@ant-design/icons';
 import moment from 'moment'
@@ -6,13 +6,34 @@ import moment from 'moment'
 const { Meta } = Card;
 const { Panel } = Collapse;
 
-const PatientInfo = ({client}) => {
+const PatientInfo = ({client, clientProviders}) => {
 
-    const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
+    
+    function clientProviderDivs(){
+        if(clientProviders === null){
+            return <p>loading providers . . .</p>
+        } else if (clientProviders == undefined){
+            return <p>Client is not assigned to any providers.</p>
+        } else {
+            return (
+                clientProviders.map(clientProvider=>{
+                const provider = clientProvider.provider
+                const providerUser = clientProvider.provider.user
+                return (
+                <div key={clientProvider.id} style={{marginBottom: '10px'}}>
+                <h6>{providerUser.first_name} {providerUser.last_name}</h6>
+                <p>{provider.provider_type.name}</p>
+                <p>{providerUser.email}</p>
+                </div>
+                )
+            })
+            )
+        }
+    }
+
+    useEffect(()=>{
+        clientProviderDivs()
+    }, [clientProviders])
 
     return (
         <section className='patientInfoContainer'>
@@ -37,16 +58,17 @@ const PatientInfo = ({client}) => {
             </Card>
             <Collapse accordion>
                 <Panel header="Patient Information" key="1">
-                    <p>{text}</p>
+                    <p>Email: {client ? client.user.email : null}</p>
+                    <p>Phone Number: {client ? client.phone_number : null}</p>
                 </Panel>
                 <Panel header="Current Providers" key="2">
-                    <p>{text}</p>
+                    {clientProviderDivs()}
                 </Panel>
                 <Panel header="Medication" key="3">
-                    <p>{text}</p>
+                    <p>Medication List</p>
                 </Panel>
                 <Panel header="Insurance" key="4">
-                    <p>{text}</p>
+                    <p>Patient Insurance</p>
                 </Panel>
             </Collapse>
 

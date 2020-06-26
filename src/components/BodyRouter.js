@@ -3,8 +3,8 @@ import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import Login from './loginSignup/Login'
 import ProviderHome from './providerHome/ProviderHome'
 import IndividualClientView from './individualClientView/IndividualClientView'
-
-
+import AdminLogin from './loginSignup/AdminLogin'
+import AdminPage from './adminPage/AdminPage'
 const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
 
   const [formSubmitted, setFormSubmitted] = useState(false)
@@ -20,7 +20,7 @@ const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
   });
 
   const credentials = sessionStorage.getItem('token');
-
+  const admin = sessionStorage.getItem('adminId');
   return (
     <Switch>
       <Route exact path="/"
@@ -36,6 +36,20 @@ const BodyRouter = ({ loggedIn, setIsLoggedIn }) => {
           <Redirect exact to='/home' />
         ) : (
             <Login routerProps={routerProps} loggedIn={loggedIn} setIsLoggedIn={setIsLoggedIn} />
+          )}
+      />
+      <Route exact path="/admin_login" render={routerProps =>
+        credentials ? (
+          <Redirect exact to='/home' />
+        ) : (
+            <AdminLogin routerProps={routerProps} loggedIn={loggedIn} setIsLoggedIn={setIsLoggedIn} />
+          )}
+      />
+      <Route exact path="/admin" render={routerProps =>
+        credentials && admin ? (
+          <AdminPage routerProps={routerProps} />
+        ) : (
+          <Redirect exact to='/' />
           )}
       />
       <Route exact path="/home" render={routerProps =>

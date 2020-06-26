@@ -20,6 +20,16 @@ const clientManager = {
         }
     })
     .then(resp => resp.json())
+  },
+  async getFilteredClients() {
+    return await fetch(`${baseUrl}/filtered_clients`, {
+      "method": "GET",
+      "headers": {
+          "Accept": "application/json",
+          "Authorization": `Token ${sessionStorage.getItem("token")}`
+      }
+  })
+  .then(resp => resp.json())
   }
 };
 

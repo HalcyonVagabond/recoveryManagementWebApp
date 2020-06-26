@@ -5,9 +5,10 @@
     width: 300px;
     border-right: 1px solid lightgray;
     padding-right: 15px;
-    height: 93%;
+    height: 93vh;
     background-color: lightgrey;
     padding-top: 15px;
+    overflow: auto;
 }
 .patientInfoContainer .ant-card-cover > *{
     width: 84% !important;
@@ -88,6 +89,12 @@
 /* .therapist:hover{
     background-color: lightcoral!important;
 } */
+.psychologistNote{
+    background-color: #a9fee4 !important;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+}
+
 .medical-doctorNote{
     background-color: #9bea92 !important;
     border-top: 2px solid lightgray;

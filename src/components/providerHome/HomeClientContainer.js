@@ -1,23 +1,38 @@
 import React, {useState, useEffect} from 'react'
 import {Input, Spin, PageHeader, Avatar} from 'antd'
 import HomeClientCard from './HomeClientCard'
+import HomeUnassignedClientCard from './HomeUnassignedClientCard'
 
 const {Search} = Input;
 
-const HomeClientContainer = ({routerProps, caseload, setDraggedDivData, formSubmitted}) => {
+const HomeClientContainer = ({routerProps, caseload, unassignedClients, setDraggedDivData, formSubmitted, setFormSubmitted}) => {
 
     const [searchTerm, setSearchTerm] = useState(null);
-    const [tooltipOpen, setTooltipOpen] = useState(false);
+    const [seeOtherClients, changeSeeOtherClients] = useState(false)
 
-    const toggle = () => setTooltipOpen(!tooltipOpen);
-
-    function dragStart(e){
-        const target = e.target;
-        e.dataTransfer.setData('client_id', target.id);
-        
+    function handleSearch(value) {
+        setSearchTerm(value)
     };
-    function dragOver(e){
-        e.stopPropagation();
+
+    function displayOtherClients () {
+
+        if (!unassignedClients) {
+            return (
+                <>
+                <h1>Loading Unassigned Clients</h1>
+                <Spin size="large" />
+                </>
+            );
+        } else if (unassignedClients && !searchTerm){
+            return (
+                unassignedClients.map(unassignedClient=><HomeUnassignedClientCard key={unassignedClient.id} unassignedClient={unassignedClient} routerProps={routerProps} setDraggedDivData={setDraggedDivData} setFormSubmitted={setFormSubmitted}/>)
+            );
+        } else if (unassignedClients && searchTerm){
+            const filtered = unassignedClients.filter(client=>client.user.first_name === searchTerm || client.user.last_name === searchTerm)
+            return (
+                filtered.map(unassignedClient=><HomeUnassignedClientCard key={unassignedClient.id} unassignedClient={unassignedClient} routerProps={routerProps} setDraggedDivData={setDraggedDivData} setFormSubmitted={setFormSubmitted}/>)
+            );
+        }
     };
 
     function displayCaseLoad () {
@@ -30,22 +45,47 @@ const HomeClientContainer = ({routerProps, caseload, setDraggedDivData, formSubm
             );
         } else if (caseload && !searchTerm){
             return (
-                caseload.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps} setDraggedDivData={setDraggedDivData}/>)
+                caseload.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps} setDraggedDivData={setDraggedDivData} setFormSubmitted={setFormSubmitted}/>)
+            );
+        } else if (caseload && searchTerm){
+            const filtered = caseload.filter(client=>client.client.user.first_name == searchTerm || client.client.user.last_name == searchTerm)
+            return (
+                filtered.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps} setDraggedDivData={setDraggedDivData} setFormSubmitted={setFormSubmitted}/>)
             );
         }
     };
 
+    function displayConditional(){
+        return !seeOtherClients ? displayCaseLoad() : displayOtherClients()
+    };
+
+    function headerTitle(){
+        if(!seeOtherClients){
+            return 'My Clients'
+        } else {
+            return 'Unassigned'
+        }
+    };
+
     useEffect(()=>{
-        displayCaseLoad()
-        console.log('supposed to reload clients')
+        displayConditional()
     },[caseload, searchTerm, formSubmitted])
+
+    useEffect(()=>{
+        displayConditional()
+    }, [seeOtherClients])
 
     return (
         <article className='homeClientContainer boxContainer centerContent'>
-            <PageHeader  title='Client List' avatar={{ src: require('../../images/profileIcon.png')}} />
+            <div className='clientToggleButton'
+                onClick={()=>{
+                changeSeeOtherClients(!seeOtherClients)
+             }}>
+            <PageHeader  title={headerTitle()} avatar={{ src: require('../../images/profileIcon.png')}} />
+             </div>
             <div className='clientListContainer'>
-                <Search placeholder="search client" onSearch={value => console.log(value)} enterButton />
-                {displayCaseLoad()}
+                <Search placeholder="search client" onSearch={handleSearch} enterButton />
+                {displayConditional()}
             </div>
             <div className='greenDiv ant-alert clickable' draggable={true}>
                 <h4>Add Meeting</h4>

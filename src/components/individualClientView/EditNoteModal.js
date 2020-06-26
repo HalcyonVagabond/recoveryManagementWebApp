@@ -31,7 +31,6 @@ const HomeAppointmentFormModal = ({client, setFormSubmitted, note}) => {
         editedNote['content'] =  formValues.content;
 
         noteManager.updateNote(editedNote, note.id).then((noteReturn) => {
-            console.log(noteReturn)
             setFormSubmitted(true)
             setEditFormOpen(false)
             document.getElementById(`greyBackground-${note.id}`).classList.toggle('hidden')

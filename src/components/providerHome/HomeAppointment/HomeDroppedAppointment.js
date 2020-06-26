@@ -20,7 +20,6 @@ const HomeDroppedAppointmentModal = ({droppedAppointmentOpen, droppedFormToggle,
         formData.append('duration', formValues.duration);
       
       appointmentManager.postNewAppointment(formData).then((appointmentReturn) => {
-          console.log(appointmentReturn)
           setFormSubmitted(true)
           droppedFormToggle()
       })

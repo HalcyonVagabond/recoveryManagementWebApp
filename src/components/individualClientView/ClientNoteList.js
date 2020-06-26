@@ -19,7 +19,6 @@ const PatientNotes = ({client, clientNotes, setFormSubmitted, routerProps}) => {
     }
 
     function createNoteDivs(){
-        console.log("Client Notes",clientNotes)
         if(clientNotes === null){
             return <Spin size='large' />
         } else if (clientNotes == undefined){
@@ -66,7 +65,6 @@ const PatientNotes = ({client, clientNotes, setFormSubmitted, routerProps}) => {
     const [current, changeCurrent] = useState('date')
 
     const handleClick = e => {
-        console.log('click ', e);
         changeCurrent(e.key)
     };
 

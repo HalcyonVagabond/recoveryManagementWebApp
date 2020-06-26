@@ -2,8 +2,18 @@ import React, { useEffect } from 'react'
 import { Spin } from 'antd';
 import { Button, Card, Image } from 'semantic-ui-react'
 import moment from 'moment';
+import appointmentManager from '../../modules/appointmentManager'
 
-const homeUpcomingEvents = ({nextAppointment}) => {
+const HomeUpcomingEvents = ({nextAppointment, formSubmitted, setFormSubmitted}) => {
+
+    function handleCancel(){
+      if(window.confirm(`Are you sure you want to cancel your appointment with ${nextAppointment.client.user.first_name}`)){
+        appointmentManager.deleteAppointment(nextAppointment).then(()=>{
+          window.confirm('Appointment canceled and client notified.')
+          setFormSubmitted(true)
+        })
+      }
+    }
 
     function loadingConditional(){
         if (nextAppointment === null){
@@ -20,7 +30,7 @@ const homeUpcomingEvents = ({nextAppointment}) => {
           
          } else{
             return (
-                <Card>
+                <Card style={{padding: '20px'}}>
       <Card.Content>
         <Image
           floated='right'
@@ -35,11 +45,11 @@ const homeUpcomingEvents = ({nextAppointment}) => {
       </Card.Content>
       <Card.Content extra>
         <div className='ui two buttons'>
-          <Button basic color='green'>
-            Approve
+          <Button basic color='blue'>
+           Send Reminder
           </Button>
-          <Button basic color='red'>
-            Decline
+          <Button basic color='red' onClick={handleCancel}>
+            Cancel
           </Button>
         </div>
       </Card.Content>
@@ -48,9 +58,9 @@ const homeUpcomingEvents = ({nextAppointment}) => {
         }
     };
 
-    // useEffect(()=>{
-    //     loadingConditional()
-    // }, [nextAppointment]);
+    useEffect(()=>{
+        loadingConditional()
+    }, [formSubmitted]);
 
     return (
         <article className='homeUpcomingEventsContainer boxContainer'>
@@ -59,4 +69,4 @@ const homeUpcomingEvents = ({nextAppointment}) => {
     );
 };
 
-export default homeUpcomingEvents;
+export default HomeUpcomingEvents;

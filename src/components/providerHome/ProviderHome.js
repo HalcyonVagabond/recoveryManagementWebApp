@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import patientClientManager from '../../modules/patientClientManager'
+import patientClientManager from '../../modules/providerClientManager'
 import appointmentManager from '../../modules/appointmentManager'
 import HomeCalendar from './HomeCalendar'
 import HomeUpcomingEvents from './HomeUpcomingEvents'
@@ -10,6 +10,7 @@ import './ProviderHome.css'
 
 const ProviderHome = ({routerProps, formSubmitted, setFormSubmitted}) => {
     const [caseload, setCaseload] = useState(null);
+    const [unassignedClients, setUnassignedClients] = useState(null)
     const [appointments, setAppointments] = useState(null);
     const [nextAppointment, setNextAppointment] = useState(null);
     const [selectedDate, setSelectedDate] = useState(moment())
@@ -17,9 +18,14 @@ const ProviderHome = ({routerProps, formSubmitted, setFormSubmitted}) => {
     const [appointmentFormOpen, changeAppointmentFormOpen]=useState(false)
     const [draggedDivData, setDraggedDivData] = useState(null)
 
-    function getClients(){
+    function getProviderClients(){
         patientClientManager.getProviderClients().then(resp=>{
             setCaseload(resp)
+        });
+    };
+    function getUnassignedClients(){
+        patientClientManager.getUnassignedClients().then(resp=>{
+            setUnassignedClients(resp)
         });
     };
 
@@ -31,12 +37,12 @@ const ProviderHome = ({routerProps, formSubmitted, setFormSubmitted}) => {
             });
             setAppointments(sorted)
             setNextAppointment(sorted.filter(appt => new Date(appt.date_time) > new Date())[0])
-            console.log("Appointments sorted", sorted)
         });
     };
 
     useEffect(()=>{
-        getClients()
+        getProviderClients()
+        getUnassignedClients()
         getAppointments()
         setTimeout(()=>{
             setFormSubmitted(false)
@@ -56,11 +62,11 @@ const ProviderHome = ({routerProps, formSubmitted, setFormSubmitted}) => {
         <section className='homeContainer'> 
             <div>
                 <HomeCalendar setSelectedDate={setSelectedDate}/>
-                <HomeUpcomingEvents nextAppointment={nextAppointment}/>
+                <HomeUpcomingEvents nextAppointment={nextAppointment} setFormSubmitted={setFormSubmitted} formSubmitted={formSubmitted}/>
             </div>
             <div className='appointmentClientContainer'>
             <HomeAppointmentContainer selectedDate={selectedDate} selectedDateAppointments={selectedDateAppointments} caseload={caseload} formSubmitted={formSubmitted} setFormSubmitted={setFormSubmitted} appointmentFormOpen={appointmentFormOpen} changeAppointmentFormOpen={changeAppointmentFormOpen} draggedDivData={draggedDivData}/>
-            <HomeClientContainer caseload={caseload} routerProps={routerProps} setDraggedDivData={setDraggedDivData} formSubmitted={formSubmitted}/>
+            <HomeClientContainer caseload={caseload} unassignedClients={unassignedClients} routerProps={routerProps} setDraggedDivData={setDraggedDivData} formSubmitted={formSubmitted} setFormSubmitted={setFormSubmitted}/>
             </div>
         </section>
     )

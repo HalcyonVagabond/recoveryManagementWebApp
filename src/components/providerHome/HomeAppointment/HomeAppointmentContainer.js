@@ -123,9 +123,6 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
     useEffect(()=>{
         generateTimeDivs()
     },[formSubmitted])
-    useEffect(()=>{
-        console.log("Edit Form Appt",editFormAppointment)
-    },[editFormAppointment])
     
     return (
         <section className='homeAppointmentContainer boxContainer'>
