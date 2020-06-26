@@ -38,6 +38,14 @@ const appointmentManager = {
       },
       "body": updatedAppointment
     })
+  }, reminderEmail(appointmentId){
+      return fetch(`${baseUrl}/appointment_reminder/${appointmentId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Token ${sessionStorage.getItem("token")}`,
+        }
+      }).then((resp) => resp.json());
   }
 };
 

@@ -15,6 +15,12 @@ const HomeUpcomingEvents = ({nextAppointment, formSubmitted, setFormSubmitted}) 
       }
     }
 
+    function sendReminderEmail(){
+      if(window.confirm(`Send ${nextAppointment.client.user.first_name} a reminder for your appointment?`)){
+        appointmentManager.reminderEmail(nextAppointment.id)
+      };
+    }
+
     function loadingConditional(){
         if (nextAppointment === null){
             return (
@@ -45,7 +51,7 @@ const HomeUpcomingEvents = ({nextAppointment, formSubmitted, setFormSubmitted}) 
       </Card.Content>
       <Card.Content extra>
         <div className='ui two buttons'>
-          <Button basic color='blue'>
+          <Button basic color='blue' onClick={sendReminderEmail}>
            Send Reminder
           </Button>
           <Button basic color='red' onClick={handleCancel}>
