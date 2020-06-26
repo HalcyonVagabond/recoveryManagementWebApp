@@ -4,7 +4,7 @@ import authManager from "../../modules/authManager.js";
 import { Form, FormGroup, Input, Button } from 'reactstrap'
 import { Header, Icon } from 'semantic-ui-react'
 
-const Login = ({ routerProps, loggedIn, setIsLoggedIn }) => {
+const AdminLogin = ({ routerProps, loggedIn, setIsLoggedIn }) => {
     const [credentials, setCredentials] = useState({});
 
     const handleFieldChange = (evt) => {
@@ -15,15 +15,16 @@ const Login = ({ routerProps, loggedIn, setIsLoggedIn }) => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        return authManager.loginUser(credentials)
+        return authManager.loginAdmin(credentials)
             .then((parsedResponse) => {
                 if (
                     "valid" in parsedResponse &&
                     parsedResponse.valid &&
-                    "token" in parsedResponse
+                    "token" in parsedResponse && 
+                    "admin" in parsedResponse
                 ) {
                     sessionStorage.setItem("token", parsedResponse.token);
-                    sessionStorage.setItem("providerId", parsedResponse.provider_id)
+                    sessionStorage.setItem("adminId", parsedResponse.admin)
                     setIsLoggedIn(true);
                 }
             });
@@ -31,7 +32,7 @@ const Login = ({ routerProps, loggedIn, setIsLoggedIn }) => {
 
     function redirectWhenLoggedIn() {
         if (loggedIn) {
-            routerProps.history.push('/home')
+            routerProps.history.push('/admin')
         };
     };
 
@@ -44,10 +45,10 @@ const Login = ({ routerProps, loggedIn, setIsLoggedIn }) => {
             <section id='creationForm' className='boxContainer'>
                 <div className='innerContent'>
                 <Header as='h2' icon>
-                    <Icon className='loginIcon' name='id card'/>
+                    <Icon className='loginIcon' name='settings' />
                     Evolving Recovery
                     <Header.Subheader>
-                        Login to your provider account
+                        Login to your admin account
                     </Header.Subheader>
                 </Header>
                 <Form onSubmit={handleLogin}>
@@ -73,11 +74,11 @@ const Login = ({ routerProps, loggedIn, setIsLoggedIn }) => {
                         <Button type="Submit">Login</Button>
                     </FormGroup>
                 </Form>
-                <p className='clickable' style={{textDecoration: 'underline', color: 'blue'}}onClick={()=>routerProps.history.push('/admin_login')}>admin login</p>
+                <p className='clickable' style={{textDecoration: 'underline', color: 'blue'}}onClick={()=>routerProps.history.push('/login')}>provider login</p>
                 </div>
             </section>
         </div>
     );
 };
 
-export default Login;
+export default AdminLogin;

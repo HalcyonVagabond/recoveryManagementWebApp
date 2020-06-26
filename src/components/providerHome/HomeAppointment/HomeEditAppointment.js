@@ -16,7 +16,6 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
         setFormValues(stateToChange);
     };
     const handleTimeChange = (evt) => {
-        console.log('Here Changing Time!', evt.target.value)
         if(evt.target.id === 'hour' && (parseInt(evt.target.value)===12)){
             const stateToChange = { ...time };
             stateToChange[evt.target.id] = evt.target.value;
@@ -53,7 +52,6 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
       
         if(editFormAppointment){
             appointmentManager.updateAppointment(formData, editFormAppointment.id).then((resp)=>{
-                console.log("From update appt!", resp)
                 setFormSubmitted(true)
                 changeEditFormOpen(false)
                 setEditFormAppointment(null)
@@ -61,7 +59,6 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
             })
         } else {
             appointmentManager.postNewAppointment(formData).then((appointmentReturn) => {
-                console.log(appointmentReturn)
                 setFormSubmitted(true)
                 changeEditFormOpen(false)
                 document.getElementById('greyBackground-edit').classList.toggle('hidden')
@@ -102,7 +99,6 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
 
     useEffect(()=>{
         selectedDateFunc()
-        console.log(selectedDate)
     },[selectedDate])
 
     useEffect(()=>{
@@ -123,25 +119,33 @@ const HomeEditAppointment = ({editFormOpen, changeEditFormOpen, selectedDate, ca
 
                     <h3 className='title'>{editFormAppointment ? 'Update Appointment' : 'Create Appointment'}</h3>
                     <h4>{editFormAppointment?`${editFormAppointment.client.user.first_name} ${editFormAppointment.client.user.last_name} ${moment().diff(moment(editFormAppointment.client.birth_date), 'years')} y.o. ${editFormAppointment.client.gender}`:null}</h4>
+                    <fieldset>
                     <DatePicker id='date_time' className='field' defaultValue={selectedDateFunc} onSelect={setCalendarDate}/>
+                    </fieldset>
                     <h5 className='field'>Select Time: </h5>
                     <div className='timeSelectContainer' style={{'display': 'flex'}}>
+                    <fieldset>
                       <select id='hour' onChange={handleTimeChange} className='timeSelect' placeholder='Hour' required defaultValue={defaultValues.hour()}>
                         {hourOptions()}
                       </select>
+                      </fieldset>
+                      <fieldset>
                       <select id='minute' onChange={handleTimeChange} className='timeSelect' placeholder='Minute' required defaultValue={defaultValues.minute()}>
                         <option value='00'>00</option>
                         <option value='30'>30</option>
                       </select>
+                      </fieldset>
                       <p id='am_pm' className='timeSelect'>
                         {timeOfDayOptions()}
                       </p>
                     </div>
+                    <fieldset>
                     <select id='duration' className='field' placeholder='Duration' onChange={handleFieldChange} required defaultValue={editFormAppointment ? editFormAppointment.duration : 30}>
                         <option value={30}>30 minutes</option>
                         <option value={60}>60 minutes</option>
                         <option value={90}>90 minutes</option>
                     </select>
+                    </fieldset>
                     <div className='apptFormButtons field'>
                     
                         <Button type='submit'>

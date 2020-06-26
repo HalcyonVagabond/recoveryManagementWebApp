@@ -14,13 +14,11 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
         setFormValues(stateToChange);
     };
     const handleClientChange = (event, data) => {
-        console.log(event)
         const stateToChange = { ...formValues };
         stateToChange['client_id'] = data.value;
         setFormValues(stateToChange);
     };
     const handleTimeChange = (evt) => {
-        console.log('Here Changing Time!', evt.target.value)
         if(evt.target.id === 'hour' && (parseInt(evt.target.value)===12)){
             const stateToChange = { ...time };
             stateToChange[evt.target.id] = evt.target.value;
@@ -49,14 +47,12 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(`${formValues.date}T${(time.am_pm === 'pm' && parseInt(time.hour<12)) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}${moment().format('Z')}`)
         const formData = new FormData();
         formData.append('client_id', formValues.client_id);
         formData.append('date_time', `${formValues.date}T${(time.am_pm == 'pm' && parseInt(time.hour)<12) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}:00${moment().format('Z')}`);
         formData.append('duration', formValues.duration);
       
       appointmentManager.postNewAppointment(formData).then((appointmentReturn) => {
-          console.log(appointmentReturn)
           setFormSubmitted(true)
           changeAppointmentFormOpen(false)
           document.getElementById('greyBackground').classList.toggle('hidden')
@@ -100,7 +96,6 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
 
     useEffect(()=>{
         selectedDateFunc()
-        console.log(selectedDate)
     },[selectedDate])
 
     useEffect(()=>{
@@ -115,26 +110,36 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
             <div className='innerContent'>
                 <form className='innermostContent' onSubmit={handleSubmit}>
                     <h3 className='title'>Create Appointment</h3>
+                    <fieldset>
                     <Dropdown id='client_id' className='field' options={clientOptions} placeholder='Select Client' search selection onChange={handleClientChange} required />
+                    </fieldset>
+                    <fieldset>
                     <DatePicker id='date_time' className='field' defaultValue={selectedDateFunc} onSelect={setCalendarDate}/>
+                    </fieldset>
                     <h5 className='field'>Select Time: </h5>
                     <div className='timeSelectContainer' style={{'display': 'flex'}}>
+                    <fieldset>
                       <select id='hour' onChange={handleTimeChange} className='timeSelect' placeholder='Hour' required>
                         {hourOptions()}
                       </select>
+                      </fieldset>
+                      <fieldset>
                       <select id='minute' onChange={handleTimeChange} className='timeSelect' placeholder='Minute' defaultValue='minute' required>
                         <option value='00'>00</option>
                         <option value='30'>30</option>
                       </select>
+                      </fieldset>
                       <p id='am_pm' className='timeSelect'>
                         {timeOfDayOptions()}
                       </p>
                     </div>
+                    <fieldset>
                     <select id='duration' className='field' placeholder='Duration' onChange={handleFieldChange} required>
                         <option value={30}>30 minutes</option>
                         <option value={60}>60 minutes</option>
                         <option value={90}>90 minutes</option>
                     </select>
+                    </fieldset>
                     <div className='apptFormButtons field'>
                     
                         <Button type='submit'>

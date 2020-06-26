@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {Tooltip} from 'reactstrap'
+import {Icon} from 'semantic-ui-react'
+import providerClientManager from '../../modules/providerClientManager'
 
-
-const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData}) => {
+const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData, setFormSubmitted}) => {
     const client = clientProvider.client
     const user = clientProvider.client.user
 
@@ -20,16 +21,21 @@ const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData}) => {
         routerProps.history.push(`/clients/${clientProvider.client_id}`)
     }
 
+    function handleUnassign(){
+        if(window.confirm('Are you sure you want to unassign this client?')){
+            providerClientManager.deleteProviderClient(clientProvider.id).then(resp=>{
+                setFormSubmitted(true)
+            })
+        }
+    }
+
     function dragStart(e){
         const target = e.target;
-        console.log(e.target.value)
         setDraggedDivData(clientProvider)
         e.dataTransfer.setData('client_id', target.id);
 
     };
-    // function dragOver(e){
-    //     e.stopPropagation();
-    // };
+    
 
     return (
         <div
@@ -38,13 +44,13 @@ const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData}) => {
             // onDragOver={dragOver}
             key={clientProvider.client_id}
             id={clientProvider.client_id}
-            className='homeClientCard lightBlueDiv .ant-alert'
+            className='homeClientCard caseloadCard lightBlueDiv .ant-alert'
         >
-            {`${clientProvider.client.user.first_name} ${clientProvider.client.user.last_name} `}
+            <p className='cardClientName' onClick={clickDetails} >{`${clientProvider.client.user.first_name} ${clientProvider.client.user.last_name} `}</p>
 
-            <span style={{textDecoration: "underline", color:"var(--mainMediumBlue)"}} onClick={clickDetails} id={`clientDetails-${clientProvider.client_id}`}>details</span>
+            <Icon name='minus square' className='clickable' id={`clientDetails-${clientProvider.client_id}`} onClick={handleUnassign}/>
             <Tooltip placement="top" isOpen={tooltipOpen} target={`clientDetails-${clientProvider.client_id}`} toggle={toggle}>
-              View {user.first_name}'s details
+              Unassign Client
             </Tooltip>
         </div>
     )

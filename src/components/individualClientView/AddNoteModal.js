@@ -7,11 +7,9 @@ const HomeAppointmentFormModal = ({client, noteFormOpen, changeNoteFormOpen, set
     const [formValues, setFormValues] = useState({})
     const [noteTemplates, setNoteTemplates] = useState(null)
 
-
-
-    function getNoteTemplates(){
-        noteManager.getNoteTemplates().then(resp=>console.log(resp))
-    }
+    // function getNoteTemplates(){
+    //     noteManager.getNoteTemplates()
+    // }
 
     const handleFieldChange = (evt) => {
         const stateToChange = { ...formValues };
@@ -29,7 +27,6 @@ const HomeAppointmentFormModal = ({client, noteFormOpen, changeNoteFormOpen, set
         formData.append('content', formValues.content);
       
       noteManager.postNewNote(formData).then((noteReturn) => {
-          console.log(noteReturn)
           setFormSubmitted(true)
           changeNoteFormOpen(false)
           document.getElementById('greyBackground').classList.toggle('hidden')
@@ -37,9 +34,9 @@ const HomeAppointmentFormModal = ({client, noteFormOpen, changeNoteFormOpen, set
       
     }
     
-    useEffect(()=>{
-        getNoteTemplates()
-    },[])
+    // useEffect(()=>{
+    //     getNoteTemplates()
+    // },[])
 
     return (
         

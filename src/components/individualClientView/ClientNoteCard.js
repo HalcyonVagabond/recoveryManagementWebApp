@@ -10,12 +10,10 @@ const NoteCard = () => {
     };
 
     const handleOk = e => {
-        console.log(e);
         setState(false);
     };
 
     const handleCancel = e => {
-        console.log(e);
         setState(false);
     };
 

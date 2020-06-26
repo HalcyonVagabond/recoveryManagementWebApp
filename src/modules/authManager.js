@@ -11,7 +11,18 @@ const authManager = {
       body: JSON.stringify(userCredentials),
     });
     return await resp.json();
-  }
+  },
+  async loginAdmin(userCredentials) {
+    const resp = await fetch(`${baseUrl}admin_login/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(userCredentials),
+    });
+    return await resp.json();
+  },
 };
 
 export default authManager;
