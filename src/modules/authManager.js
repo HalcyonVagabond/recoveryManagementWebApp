@@ -1,6 +1,6 @@
 const urlConditional = () => {
   if(window.location.href.includes('com')){
-    return 'http://13.58.195.142:8000'
+    return 'https://3.14.139.189:8000'
   } else {
     return "http://localhost:8000";
   }
