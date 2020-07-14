@@ -1,8 +1,17 @@
-const baseUrl = "http://127.0.0.1:8000/";
+const urlConditional = () => {
+  if(window.location.href.includes('com')){
+    return 'http://13.58.195.142:8000'
+  } else {
+    return "http://localhost:8000";
+  }
+}
+const baseUrl = urlConditional()
+// const baseUrl = "http://localhost:8000";
+// const baseUrl = "http://13.58.195.142:8000";
 
 const authManager = {
   async loginUser(userCredentials) {
-    const resp = await fetch(`${baseUrl}login/`, {
+    const resp = await fetch(`${baseUrl}/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -13,7 +22,7 @@ const authManager = {
     return await resp.json();
   },
   async loginAdmin(userCredentials) {
-    const resp = await fetch(`${baseUrl}admin_login/`, {
+    const resp = await fetch(`${baseUrl}/admin_login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

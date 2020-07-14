@@ -1,5 +1,13 @@
-const baseUrl = "http://127.0.0.1:8000";
-
+const urlConditional = () => {
+  if(window.location.href.includes('com')){
+    return 'http://13.58.195.142:8000'
+  } else {
+    return "http://localhost:8000";
+  }
+}
+const baseUrl = urlConditional()
+// const baseUrl = 'http://13.58.195.142:8000'
+// const baseUrl = "http://localhost:8000";
 const providerClientManager = {
   async getProviderClients() {
     return await fetch(`${baseUrl}/provider_client`, {

@@ -52,7 +52,6 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
             e.preventDefault()
             const client_id = e.dataTransfer.getData('client_id')
             const clientCard = document.getElementById(client_id)
-            clientCard.style.display = 'block'
             const clone = clientCard.cloneNode(true)
             clone.id = `${client_id}-clone`
             setIdToHide(clone.id)
