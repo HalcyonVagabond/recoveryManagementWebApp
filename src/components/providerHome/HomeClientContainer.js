@@ -48,7 +48,7 @@ const HomeClientContainer = ({routerProps, caseload, unassignedClients, setDragg
                 caseload.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps} setDraggedDivData={setDraggedDivData} setFormSubmitted={setFormSubmitted}/>)
             );
         } else if (caseload && searchTerm){
-            const filtered = caseload.filter(client=>client.client.user.first_name == searchTerm || client.client.user.last_name == searchTerm)
+            const filtered = caseload.filter(client=>client.client.user.first_name.toLowerCase().includes(searchTerm) || client.client.user.last_name.toLowerCase().includes(searchTerm))
             return (
                 filtered.map(clientProvider=><HomeClientCard key={clientProvider.client_id} clientProvider={clientProvider} routerProps={routerProps} setDraggedDivData={setDraggedDivData} setFormSubmitted={setFormSubmitted}/>)
             );
@@ -83,10 +83,13 @@ const HomeClientContainer = ({routerProps, caseload, unassignedClients, setDragg
              }}>
             <PageHeader  title={headerTitle()} avatar={{ src: require('../../images/profileIcon.png')}} />
              </div>
-            <div className='clientListContainer'>
+                <div className='clientSearchbar'>
                 <Search placeholder="search client" onSearch={handleSearch} enterButton />
+                </div>
+            <div className='clientListContainer'>
                 {displayConditional()}
             </div>
+            <div style={{margin: '5px', padding: '10px', backgroundColor: 'white', borderRadius: '2px'}}>
             <div className='greenDiv ant-alert clickable' draggable={true}>
                 <h4>Add Meeting</h4>
                 <p>Drag and drop to add a meeting to your calendar</p>
@@ -94,6 +97,7 @@ const HomeClientContainer = ({routerProps, caseload, unassignedClients, setDragg
             <div className='yellowDiv ant-alert clickable' draggable={true}>   
                 <h4>Add To Do Item</h4>
                 <p>Drag and drop to add a "To Do" to your calendar</p>
+            </div>
             </div>
         </article>
     )

@@ -48,6 +48,9 @@ const HomeUpcomingEvents = ({nextAppointment, formSubmitted, setFormSubmitted}) 
         <Card.Description>
           {moment().format('YYYY-MM-DD') === moment(nextAppointment.date_time).format('YYYY-MM-DD') ? `Today at ${moment(nextAppointment.date_time).format('hh:mm a')}` : `${moment(nextAppointment.date_time).format('dddd MM/DD/YYYY')} at ${moment(nextAppointment.date_time).format('hh:mm a')}`}
         </Card.Description>
+        <Card.Description>
+          <a href={`https://${nextAppointment.appointment_url}`} target='_blank'>Link to Appointment</a>
+        </Card.Description>
       </Card.Content>
       <Card.Content extra>
         <div className='ui two buttons'>

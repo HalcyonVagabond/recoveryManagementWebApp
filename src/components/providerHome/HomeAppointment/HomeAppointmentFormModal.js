@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import {Transition, Dropdown, Button} from 'semantic-ui-react'
 import {DatePicker} from 'antd'
+import {LoadingOutlined} from '@ant-design/icons';
 import moment from 'moment'
 import appointmentManager from '../../../modules/appointmentManager'
 
-const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpen, selectedDate, caseload, setFormSubmitted}) => {
+const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpen, selectedDate, caseload, setFormSubmitted, formSubmitted}) => {
     const [formValues, setFormValues] = useState({date: selectedDate.format("YYYY-MM-DD"), duration: 30})
     const [time, setTime] = useState({hour: '12', minute: '00', am_pm: 'pm'})
-
+    const [localSubmit, changeLocalSubmit] = useState(false)
     const handleFieldChange = (evt) => {
         const stateToChange = { ...formValues };
         stateToChange[evt.target.id] = evt.target.value;
@@ -45,15 +46,18 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
         stateToChange['date'] = value.format('YYYY-MM-DD');
         setFormValues(stateToChange)
     }
-    const handleSubmit = (e) => {
+    async function handleSubmit(e){
+        changeLocalSubmit(true)
+        buttonConditional();
         e.preventDefault()
         const formData = new FormData();
         formData.append('client_id', formValues.client_id);
         formData.append('date_time', `${formValues.date}T${(time.am_pm == 'pm' && parseInt(time.hour)<12) ? (parseInt(time.hour) + 12).toString(): time.hour}:${time.minute}:00${moment().format('Z')}`);
         formData.append('duration', formValues.duration);
       
-      appointmentManager.postNewAppointment(formData).then((appointmentReturn) => {
+       await appointmentManager.postNewAppointment(formData).then((appointmentReturn) => {
           setFormSubmitted(true)
+          changeLocalSubmit(false)
           changeAppointmentFormOpen(false)
           document.getElementById('greyBackground').classList.toggle('hidden')
       })
@@ -94,23 +98,15 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
         }
     };
 
-    useEffect(()=>{
-        selectedDateFunc()
-    },[selectedDate])
+    function buttonConditional(){
+        return localSubmit ? <LoadingOutlined size='large' style={{marginRight:'20px'}}/>: <Button type='submit'>Save</Button>
+    }
 
-    useEffect(()=>{
-        timeOfDayOptions()
-    },[time])
-    
-    return (
-        
-        <div id='greyBackground' className='hidden'>
-        <Transition visible={appointmentFormOpen} animation='drop' duration={500}>
-            <div className='appointmentFormContainer'>
-            <div className='innerContent'>
-                <form className='innermostContent' onSubmit={handleSubmit}>
+    function createForm(){
+        return (
+            <form className='innermostContent' onSubmit={handleSubmit}>
                     <h3 className='title'>Create Appointment</h3>
-                    <fieldset>
+                    <fieldset required>
                     <Dropdown id='client_id' className='field' options={clientOptions} placeholder='Select Client' search selection onChange={handleClientChange} required />
                     </fieldset>
                     <fieldset>
@@ -142,9 +138,7 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
                     </fieldset>
                     <div className='apptFormButtons field'>
                     
-                        <Button type='submit'>
-                                Save
-                        </Button>
+                        {buttonConditional()}
                         <Button onClick={(e)=>{
                             e.preventDefault()
                             changeAppointmentFormOpen(false)
@@ -154,6 +148,28 @@ const HomeAppointmentFormModal = ({appointmentFormOpen, changeAppointmentFormOpe
                         </Button>
                     </div>
                 </form>
+        )
+    }
+
+    useEffect(()=>{
+
+        createForm()
+    }, [formSubmitted])
+    useEffect(()=>{
+        selectedDateFunc()
+    },[selectedDate])
+
+    useEffect(()=>{
+        timeOfDayOptions()
+    },[time])
+    
+    return (
+        
+        <div id='greyBackground' className='hidden'>
+        <Transition visible={appointmentFormOpen} animation='drop' duration={500}>
+            <div className='appointmentFormContainer'>
+                <div className='innerContent'>
+                    {createForm()}
                 </div>
             </div>
         </Transition>
