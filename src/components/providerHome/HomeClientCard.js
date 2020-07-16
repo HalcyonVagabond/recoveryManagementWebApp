@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import {Tooltip} from 'reactstrap'
 import {Icon} from 'semantic-ui-react'
+import { Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import providerClientManager from '../../modules/providerClientManager'
 
 const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData, setFormSubmitted}) => {
@@ -46,6 +48,7 @@ const HomeClientCard = ({routerProps, clientProvider, setDraggedDivData, setForm
             id={clientProvider.client_id}
             className='homeClientCard caseloadCard lightBlueDiv .ant-alert'
         >
+            <Avatar size="small" icon={<UserOutlined />} onClick={clickDetails}/>
             <p className='cardClientName' onClick={clickDetails} >{`${clientProvider.client.user.first_name} ${clientProvider.client.user.last_name} `}</p>
 
             <Icon name='minus square' className='clickable' id={`clientDetails-${clientProvider.client_id}`} onClick={handleUnassign}/>

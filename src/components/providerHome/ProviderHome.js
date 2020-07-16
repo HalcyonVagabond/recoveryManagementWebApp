@@ -31,12 +31,15 @@ const ProviderHome = ({routerProps, formSubmitted, setFormSubmitted}) => {
 
     function getAppointments(){
         appointmentManager.getAppointments().then(resp=>{
-
-            const sorted = resp.sort(function(a, b) {
-                return new Date(a.date_time) - new Date(b.date_time) ;
-            });
-            setAppointments(sorted)
-            setNextAppointment(sorted.filter(appt => new Date(appt.date_time) > new Date())[0])
+            console.log(typeof resp)
+            console.log(resp)
+            if(!resp['detail']){
+                const sorted = resp.sort(function(a, b) {
+                    return new Date(a.date_time) - new Date(b.date_time) ;
+                });
+                setAppointments(sorted)
+                setNextAppointment(sorted.filter(appt => new Date(appt.date_time) > new Date())[0])
+            }
         });
     };
 

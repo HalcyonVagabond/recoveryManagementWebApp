@@ -1,4 +1,13 @@
-const baseUrl = "http://127.0.0.1:8000";
+const urlConditional = () => {
+  if(window.location.href.includes('com')){
+    return 'https://3.14.139.189:8000'
+  } else {
+    return "http://localhost:8000";
+  }
+}
+const baseUrl = urlConditional()
+// const baseUrl = "http://13.58.195.142:8000";
+// const baseUrl = "http://localhost:8000";
 
 const appointmentManager = {
   async getAppointments() {
@@ -38,6 +47,14 @@ const appointmentManager = {
       },
       "body": updatedAppointment
     })
+  }, reminderEmail(appointmentId){
+      return fetch(`${baseUrl}/appointment_reminder/${appointmentId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Token ${sessionStorage.getItem("token")}`,
+        }
+      }).then((resp) => resp.json());
   }
 };
 

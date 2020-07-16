@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import {useHistory} from 'react-router-dom'
 import {Icon} from 'semantic-ui-react';
 import { CloseOutlined } from '@ant-design/icons';
+import {UncontrolledCollapse} from 'reactstrap'
 import moment from 'moment';
 import HomeAppointmentFormModal from './HomeAppointmentFormModal'
 import HomeDroppedAppointment from './HomeDroppedAppointment'
@@ -16,6 +18,8 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
     const [idToHide, setIdToHide] = useState(null)
     const [editFormAppointment, setEditFormAppointment] = useState(null)
     const [editFormOpen, changeEditFormOpen] = useState(false)
+
+    const history = useHistory();
 
     function toggleForm(){
         changeAppointmentFormOpen(!appointmentFormOpen)
@@ -52,7 +56,6 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
             e.preventDefault()
             const client_id = e.dataTransfer.getData('client_id')
             const clientCard = document.getElementById(client_id)
-            clientCard.style.display = 'block'
             const clone = clientCard.cloneNode(true)
             clone.id = `${client_id}-clone`
             setIdToHide(clone.id)
@@ -60,13 +63,12 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
             const dateTime = `${selectedDate.format('YYYY-MM-DD')}T${e.target.id}`
             setDroppedTime(dateTime)
             droppedFormToggle()
-            document.getElementById(e.target.id).style.backgroundColor = 'white'
             
         }
 
         function dragOver(e){
             e.preventDefault()
-            document.getElementById(e.target.id).style.backgroundColor = 'var(--mainDarkBlue)'
+            document.getElementById(e.target.id).style.backgroundColor = 'var(--mainLightGrey)'
         }
 
         const timeDivs = []
@@ -76,19 +78,28 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
                 const minute = (j<10 ? `0${j}` : `${j}` )
                 const exactAppointment = selectedDateAppointments ? selectedDateAppointments.filter(appt=>moment(appt.date_time).format('HH:mm').toString() === `${hour}:${minute}`)[0] : null;
                 if(selectedDateAppointments && exactAppointment){
+                    
                     timeDivs.push(
-                        <div className='timelineDivs timelineAppointment lightBlueDiv clickable' 
-                        id={`blahbblah----${exactAppointment.id}`} 
+                        <div className='timelineAppointment' 
+                        id={`appointment-${exactAppointment.id}`} 
                         key={`${hour}:${minute}`} 
                         > 
-                            {i<12 ? `${i}:${minute} am`: `${i===12 ? i : i-12}:${minute} pm`} 
-                            <h5>{exactAppointment.client.user.first_name} {exactAppointment.client.user.last_name}</h5>
-                            <p>email: {exactAppointment.client.user.email}</p>
-                            <span style={{textDecoration: "underline", color:"var(--mainMediumBlue)"}} id={`edit-${exactAppointment.id}`} onClick={()=>{
-                                setEditFormAppointment(exactAppointment)
-                                editToggleForm()
-                            }}>edit</span>
-                            <CloseOutlined className='cancelAppointment' onClick={()=>handleCancelAppointment(exactAppointment)}/>
+                          <div className='appointmentDivHeader lightBlueDiv clickable'>
+                            <p >{i<12 ? `${i}:${minute} am`: `${i===12 ? i : i-12}:${minute} pm`}</p>
+                            <h5 onClick={()=>history.push(`/clients/${exactAppointment.client_id}`)}>{exactAppointment.client.user.first_name} {exactAppointment.client.user.last_name} </h5>
+                            <p>{moment().diff(moment(exactAppointment.client.birth_date), 'years')} y.o. {exactAppointment.client.gender==='female'?'f':'m'}</p>
+                          </div> 
+                            <UncontrolledCollapse className='appointmentTimelineCollapse' toggler={`#appointment-${exactAppointment.id}`}>
+                                <p>email: {exactAppointment.client.user.email}</p>
+                                <a href={`https://${exactAppointment.appointment_url}`} target='_blank'>Link to Appointment</a>
+                                <div className='appointmentOptions'>
+                                <span className='clickable' style={{textDecoration: "underline", color:"var(--mainMediumBlue)"}} id={`edit-${exactAppointment.id}`} onClick={()=>{
+                                    setEditFormAppointment(exactAppointment)
+                                    editToggleForm()
+                                }}>edit</span>
+                                <CloseOutlined className='cancelAppointment' onClick={()=>handleCancelAppointment(exactAppointment)}/>
+                                </div>
+                            </UncontrolledCollapse>
                     </div>
                     )
                     if(exactAppointment.duration === 60 && j===0){
@@ -122,11 +133,12 @@ const HomeAppointmentList = ({selectedDate, selectedDateAppointments, caseload, 
 
     useEffect(()=>{
         generateTimeDivs()
+        setFormSubmitted(false)
     },[formSubmitted])
     
     return (
         <section className='homeAppointmentContainer boxContainer'>
-            <HomeAppointmentFormModal appointmentFormOpen={appointmentFormOpen} changeAppointmentFormOpen={changeAppointmentFormOpen} selectedDate={selectedDate} caseload={caseload} setFormSubmitted={setFormSubmitted} editFormAppointment={editFormAppointment} setEditFormAppointment={setEditFormAppointment}/>
+            <HomeAppointmentFormModal appointmentFormOpen={appointmentFormOpen} changeAppointmentFormOpen={changeAppointmentFormOpen} selectedDate={selectedDate} caseload={caseload} setFormSubmitted={setFormSubmitted} editFormAppointment={editFormAppointment} setEditFormAppointment={setEditFormAppointment} formSubmitted={formSubmitted}/>
             <div className='appointmentContainerHeader centerContent'>
                 <div>
                     <h3>Appointments</h3>
